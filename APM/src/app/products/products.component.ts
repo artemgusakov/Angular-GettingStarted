@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Product} from './product';
 
 @Component({
   selector: 'pm-products',
@@ -11,8 +12,8 @@ export class ProductsComponent implements OnInit {
   imgWidth = 50;
   imgMargin = 2;
   showImage = false;
-  filter = 'cart';
-  products: any[] = [
+  filteredProducts: Product[];
+  products: Product[] = [
     {
       'productId': 1,
       'productName': 'Leaf Rake',
@@ -44,7 +45,21 @@ export class ProductsComponent implements OnInit {
       'imageUrl': 'https://image.flaticon.com/icons/svg/1653/1653798.svg'
     }];
 
+  private _filter: string;
+
+
+  get filter(): string {
+    return this._filter;
+  }
+
+  set filter(value: string) {
+    this._filter = value;
+    this.filteredProducts = this.filter ? this.getFilteredProducts(this.filter) : this.products;
+  }
+
   constructor() {
+    this.filteredProducts = this.products;
+    this.filter = 'cart';
   }
 
   ngOnInit() {
@@ -52,5 +67,10 @@ export class ProductsComponent implements OnInit {
 
   toggleImage(): void {
     this.showImage = !this.showImage;
+  }
+
+  private getFilteredProducts(filter: string) {
+      filter = filter.toLocaleLowerCase();
+      return this.products.filter((product: Product) => product.productName.toLocaleLowerCase().indexOf(filter) !== -1);
   }
 }
