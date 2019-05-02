@@ -75,6 +75,6 @@ export class ProductsComponent implements OnInit {
   }
 
   onNotify($event) {
-    console.log('event', $event);
+    console.log($event);
   }
 }
